@@ -1,0 +1,4 @@
+ALTER TABLE ratemusic_reviews
+  DROP COLUMN IF EXISTS album_id;
+
+DROP TABLE IF EXISTS albums CASCADE;

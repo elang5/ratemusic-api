@@ -2,16 +2,18 @@
 
 This is a boilerplate project used for starting new projects!
 
-## Set up
+## Setting Up
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
-
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+- Install dependencies: `npm install`
+- Create development and test databases: `createdb ratemusic`, `createdb ratemusic-test`
+- Create database user: `createuser ratemusic`
+- Grant privileges to new user in `psql`:
+  - `GRANT ALL PRIVILEGES ON DATABASE thingful TO thingful`
+  - `GRANT ALL PRIVILEGES ON DATABASE "thingful-test" TO thingful`
+- Prepare environment file: `cp example.env .env`
+  - Replace values in `.env` with your custom values if necessary.
+- Bootstrap development database: `MIGRATION_DB_NAME=ratemusic npm run migrate`
+- Bootstrap test database: `MIGRATION_DB_NAME=ratemusic-test npm run migrate`
 
 ## Scripts
 

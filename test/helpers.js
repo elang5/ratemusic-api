@@ -152,7 +152,7 @@ function seedTables(db, users, albums, reviews) {
   return db.transaction(async trx => {
     await seedUsers(trx, users)
     await trx.into('albums').insert(albums)
-    await trx.into('ratemusic_reviews'.insert(reviews))
+    await trx.into('ratemusic_reviews').insert(reviews)
     await trx.raw(
       `SELECT setval('albums_id_seq', ?)`,
       [albums[albums.length -1].id]

@@ -65,7 +65,6 @@ describe(`Auth endpoints`, () => {
           user_name: testUsers[0].user_name,
           password: testUsers[0].password
         }
-        console.log(testUsers[0])
         const expectedToken = jwt.sign(
           { user_id: testUsers[0].id },
           process.env.JWT_SECRET,

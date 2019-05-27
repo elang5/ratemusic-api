@@ -18,7 +18,7 @@ INSERT INTO ratemusic_users (user_name, full_name, password)
     ('john5', 'John Green', '$2a$12$nQhxeazWCPCoRGtDNkwtVe/2KiYSUzu4HED7bZBDMwRDaqgMTItJK'),
     ('debra6', 'Debra Glasser', '$2a$12$lHheAQqAjWhVK3t3lwgof.BjyV7M4PkRJRjiRUwlzSFJ9LrgZ8wmK');
 
-INSERT INTO albums(title, artist, art, year, rating)
+INSERT INTO albums (title, artist, art, year, rating)
   VALUES
   ('Assume Form', 'James Blake', '../img/AF.jpg', 2018, 8),
   ('DAMN', 'Kendrick Lamar', '../img/DAMN.jpg', 2016, 7),

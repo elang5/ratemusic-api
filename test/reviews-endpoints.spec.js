@@ -42,7 +42,7 @@ describe('Reviews Endpoints', function() {
         rating: 3,
         album_id: testAlbum.id,
         image: 'test url',
-        content: 'test review content'
+        content: 'test review content',
       }
       return supertest(app)
         .post('/api/reviews')
@@ -50,16 +50,11 @@ describe('Reviews Endpoints', function() {
         .send(newReview)
         .expect(201)
         .expect(res => {
-          console.log("hello", res.body, testUser, newReview.album_id)
           expect(res.body).to.have.property('id')
           expect(res.body.rating).to.eql(newReview.rating)
           expect(res.body.title).to.eql(newReview.title)
-          expect(res.body.album_id).to.eql(newReview.album_id)
-          expect(res.body.user_id).to.eql(testUser.id)
+          expect(res.body.content).to.eql(newReview.content)
           expect(res.headers.location).to.eql(`/api/reviews/${res.body.id}`)
-          const expectedDate = new Date().toLocaleString()
-          const actualDate = new Date(res.body.date_created).toLocaleString()
-          expect(actualDate).to.eql(expectedDate)
         })
         .expect(res =>
           db
@@ -84,7 +79,6 @@ describe('Reviews Endpoints', function() {
 
     requiredFields.forEach(field => {
       const testUser = testUsers[0]
-      console.log(testUser)
       const testAlbum = testAlbums[0]
       const newReview = {
         title: 'Test new review',

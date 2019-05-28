@@ -168,6 +168,35 @@ function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
   return `Bearer ${token}`
 }
 
+function makeExpectedAlbum(album) {
+  return {
+    id: album.id,
+    title: album.title,
+    artist: album.artist,
+    year: album.year,
+    art: album.art,
+    rating: album.rating
+  }
+}
+
+function makeExpectedAlbumReviews(users, albumId, reviews) {
+  const expectedReviews = reviews.filter(review => review.album_id === albumId)
+
+  return expectedReviews.map(review => {
+    const reviewUser = users.find(user => user.id === review.user_id)
+    return {
+      id: review.id,
+      title: review.title,
+      image: review.image,
+      rating: review.rating,
+      user_id: reviewUser.id,
+      album_id: review.user_id,
+      date_created: review.date_created,
+      content: review.content
+    }
+  })
+}
+
 module.exports = {
   makeUsersArray,
   makeAlbumsArray,
@@ -177,5 +206,7 @@ module.exports = {
   cleanTables,
   seedUsers,
   seedTables,
-  makeAuthHeader
+  makeAuthHeader,
+  makeExpectedAlbum,
+  makeExpectedAlbumReviews
 }

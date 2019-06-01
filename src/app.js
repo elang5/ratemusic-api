@@ -5,7 +5,6 @@ const cors = require('cors');
 const helmet = require('helmet');
 
 const errorHandler = require('./error/error');
-// const corsOptions = require('./cors/cors');
 
 const { NODE_ENV } = require('./config');
 

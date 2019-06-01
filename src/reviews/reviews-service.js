@@ -27,6 +27,14 @@ const ReviewsService = {
       .then(review => ReviewsService.getById(db, review.id))
   },
 
+  // write tests for deleting review
+  deleteReview(db, id) {
+    return db
+      .from('ratemusic_reviews')
+      .where({ id })
+      .delete()
+  },
+
   serializeReview(review) {
     return {
       id: review.id,

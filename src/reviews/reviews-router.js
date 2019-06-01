@@ -32,4 +32,18 @@ reviewsRouter
       .catch(next)
   })
 
+  reviewsRouter
+    .route('/:reviewId')
+    .delete(requireAuth, (req, res, next) => {
+      const id = parseInt(req.params.reviewId)
+      ReviewsService.deleteReview(
+        req.app.get('db'),
+        id
+      )
+      .then(numRowsAffected => {
+        res.status(204).end()
+      })
+      .catch(next)
+    })
+
   module.exports = reviewsRouter

@@ -31,6 +31,20 @@ albumsRouter.route('/:album_id/reviews/')
       })
       .catch(next)
   })
+
+  albumsRouter.route('/:album_id/reviews/:review_id')
+  .all(checkAlbumExists)
+  .get((req, res, next) => {
+    AlbumsService.getReviewForAlbum(
+      req.app.get('db'),
+      req.params.review_id
+    )
+      .then(review => {
+        // res.json(AlbumsService.serializeAlbumReview(review))
+        res.json(review)
+      })
+      .catch(next)
+  })
   
 
 async function checkAlbumExists(req, res, next) {

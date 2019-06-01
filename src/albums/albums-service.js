@@ -24,7 +24,27 @@ const AlbumsService = {
         'rev.user_id',
         'rev.date_created'
       )
-      .where('rev.id', album_id)
+      .where('rev.album_id', album_id)
+      .leftJoin(
+        'ratemusic_users AS usr',
+        'rev.user_id',
+        'usr.id'
+      )
+      .groupBy('rev.id', 'usr.id')
+  },
+  getReviewForAlbum(db, review_id) {
+    return db
+      .from('ratemusic_reviews AS rev')
+      .select(
+        'rev.id',
+        'rev.rating',
+        'rev.title',
+        'rev.content',
+        'rev.album_id',
+        'rev.user_id',
+        'rev.date_created'
+      )
+      .where('rev.id', review_id)
       .leftJoin(
         'ratemusic_users AS usr',
         'rev.user_id',
@@ -60,12 +80,10 @@ const AlbumsService = {
 
     return {
       id: reviewData.id,
-      rating: reviewData.rating,
       album_id: reviewData.album_id,
       user_id: reviewData.user_id,
       title: reviewData.title,
       content: reviewData.content,
-      image: reviewData.image,
       rating: reviewData.rating,
       date_created: reviewData.date_created
     }

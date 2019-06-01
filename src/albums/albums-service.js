@@ -20,8 +20,9 @@ const AlbumsService = {
         'rev.rating',
         'rev.title',
         'rev.content',
-        'rev.image',
-        'rev.date_created',
+        'rev.album_id',
+        'rev.user_id',
+        'rev.date_created'
       )
       .where('rev.id', album_id)
       .leftJoin(

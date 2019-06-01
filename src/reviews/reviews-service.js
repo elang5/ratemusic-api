@@ -5,7 +5,6 @@ const ReviewsService = {
       .select(
         'rev.id',
         'rev.rating',
-        'rev.image',
         'rev.title',
         'rev.content',
         'rev.user_id',

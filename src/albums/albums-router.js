@@ -27,7 +27,7 @@ albumsRouter.route('/:album_id/reviews/')
       req.params.album_id
     )
       .then(reviews => {
-        res.json(AlbumsService.serializeAlbumReviews(reviews))
+        res.json(reviews)
       })
       .catch(next)
   })

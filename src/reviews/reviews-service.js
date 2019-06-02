@@ -8,11 +8,22 @@ const ReviewsService = {
         'rev.title',
         'rev.content',
         'rev.user_id',
+        db.raw(
+          `row_to_json(
+            (SELECT tmp FROM (
+              SELECT
+                usr.id,
+                usr.user_name,
+                usr.full_name,
+                usr.date_created
+            ) tmp)
+          ) AS "user"`
+        )
       )
       .leftJoin(
-        'ratemusic_users',
+        'ratemusic_users AS usr',
         'rev.user_id',
-        'rev.album_id'
+        'usr.id',
       )
       .where('rev.id', id)
       .first()
@@ -41,7 +52,7 @@ const ReviewsService = {
       rating: review.rating,
       title: review.title,
       content: review.content,
-      user_id: review.user_id,
+      user: review.user || {},
       album_id: review.album_id,
       date_created: review.date_created
     }

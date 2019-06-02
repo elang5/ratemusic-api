@@ -21,8 +21,8 @@ const AlbumsService = {
         'rev.title',
         'rev.content',
         'rev.album_id',
-        'rev.user_id',
-        'rev.date_created'
+        'rev.date_created',
+        ...userFields
       )
       .where('rev.album_id', album_id)
       .leftJoin(
@@ -41,8 +41,8 @@ const AlbumsService = {
         'rev.title',
         'rev.content',
         'rev.album_id',
-        'rev.user_id',
-        'rev.date_created'
+        'rev.date_created',
+        ...userFields
       )
       .where('rev.id', review_id)
       .leftJoin(
@@ -85,16 +85,18 @@ const AlbumsService = {
       title: reviewData.title,
       content: reviewData.content,
       rating: reviewData.rating,
+      user: reviewData.user || {},
       date_created: reviewData.date_created
     }
   }
 }
 
-// const userFields = [
-//   'usr.id AS user:id',
-//   'usr.user_name AS user:user_name',
-//   'usr.full_name AS user:full_name',
-//   'user.date_created AS user:date_created'
-// ]
+const userFields = [
+  'usr.id AS user_id',
+  'usr.user_name AS user_name',
+  'usr.full_name AS full_name',
+  'usr.date_created AS date_created',
+]
+
 
 module.exports = AlbumsService

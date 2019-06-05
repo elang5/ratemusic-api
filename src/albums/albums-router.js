@@ -10,7 +10,7 @@ const spotifyApi = new SpotifyApi({
   redirectUri: 'http://localhost:8888/callback/'
 })
 
-spotifyApi.setAccessToken(`BQD8jsdc9BYO8af-xCo_jd22Bl2LhTPrOkPPSLSBMJQT8sBnl8BdDsdQSDKPHpDxKPFU9knf6uhyOp0Srbp1PHSJMfSop3vYL6VCZebFXKZpoeIpatSo5x3t_HjanoCaJgtAxKIfhSlQs7b74rn5u7cjW0a74Te9gxKiry5FJ0po13Y`)
+spotifyApi.setAccessToken(`${process.env.ACCESS_TOKEN}`)
 
 albumsRouter
   .route('/')

@@ -20,15 +20,15 @@ INSERT INTO ratemusic_users (user_name, full_name, password)
 
 INSERT INTO albums (title, artist, art, year, rating)
   VALUES
-  ('Assume Form', 'James Blake', '../img/AF.jpg', 2018, 8),
-  ('DAMN', 'Kendrick Lamar', '../img/DAMN.jpg', 2016, 7),
-  ('Global Communication', 'Global Communication', '../img/GC.jpg', 1998, 9),
-  ('OME', 'Open Mike Eagle', '../img/OME.jpg', 2018, 10),
-  ('RHP', 'Red House Painters', '../img/RHP.jpg', 1996, 7),
-  ('The Shining', 'J Dilla', '../img/SHINING.jpg', 2018, 8),
-  ('Carrie & Lowell', 'Sufjan Stevens', '../img/SS.jpg', 2018, 8),
-  ('Take Me Apart', 'Kelela', '../img/TMA.jpg', 2018, 8),
-  ('To Pimp a Butterfly', 'Kendrick Lamar', '../img/TPAB.jpg', 2015, 8);
+  ('Assume Form', 'James Blake', 'https://media.pitchfork.com/photos/5c38fca2d0c1ff0f47a90250/1:1/w_320/james%20blake_assume%20form.jpg', 2018, 8),
+  ('DAMN', 'Kendrick Lamar', 'https://media.pitchfork.com/photos/5929c3e8eb335119a49ed80f/1:1/w_320/31d2b6fd.jpg', 2016, 7),
+  ('Global Communication', 'Global Communication', 'https://is4-ssl.mzstatic.com/image/thumb/Music/9b/13/f5/mzi.jntodeun.jpg/320x0w.jpg', 1998, 9),
+  ('OME', 'Open Mike Eagle', 'https://is1-ssl.mzstatic.com/image/thumb/Music69/v4/b4/6a/35/b46a35b5-cc22-fb17-41f9-257b09f60434/190374039970.jpg/320x0w.jpg', 2018, 10),
+  ('RHP', 'Red House Painters', 'https://m.media-amazon.com/images/I/51xeDZffl+L._AC_UL320_.jpg', 1996, 7),
+  ('The Shining', 'J Dilla', 'https://www.phono.cz/vimage/320x320/data/image/zbozi/shining.jpg', 2018, 8),
+  ('Carrie & Lowell', 'Sufjan Stevens', 'https://media.pitchfork.com/photos/5929ac5c5e6ef959693218f8/1:1/w_320/dbfa1978.jpg', 2018, 8),
+  ('Mezzanine', 'Massive Attack', 'https://www.phono.cz/vimage/320x320/data/image/zbozi/massive-attack-mezzanine.jpg', 1998, 10),
+  ('To Pimp a Butterfly', 'Kendrick Lamar', 'https://hasitleaked.com/wp-content/uploads/2015/03/To-Pimp-A-Butterfly-320x320.png', 2015, 8);
 
 INSERT INTO ratemusic_reviews (title, content, rating, user_id, album_id)
   VALUES

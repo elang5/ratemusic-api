@@ -33,7 +33,6 @@ albumsRouter
     )
       .then(albumIds => {
         const filteredId = albumIds.filter(alb => alb.album_id === req.params.album_id)
-        console.log(filteredId)
         spotifyApi.getAlbum(filteredId[0].album_id)
           .then(album => res.json(album.body))
           .catch(err => res.json(err))
@@ -54,7 +53,6 @@ albumsRouter.route('/:album_id/reviews/')
   })
 
   albumsRouter.route('/:album_id/reviews/:review_id')
-  .all(checkAlbumExists)
   .get((req, res, next) => {
     AlbumsService.getReviewForAlbum(
       req.app.get('db'),

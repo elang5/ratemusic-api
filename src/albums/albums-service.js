@@ -2,13 +2,12 @@ const xss = require('xss')
 const Treeize = require('treeize')
 
 const AlbumsService = {
-  getAllAlbums(db) {
-    return db
-      .from('albums')
-      .select('*')
+  getAlbumIds(db) {
+    return db('ratemusic_reviews')
+      .select('album_id')
   },
   getById(db, id) {
-    return AlbumsService.getAllAlbums(db)
+    return AlbumsService.getAlbumIds(db)
       .where({ id })
       .first()
   },

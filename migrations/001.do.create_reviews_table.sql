@@ -3,6 +3,6 @@ CREATE TABLE ratemusic_reviews (
   title TEXT NOT NULL,
   content TEXT NOT NULL,
   rating INTEGER NOT NULL,
-  album_id STRING NOT NULL,
+  album_id TEXT NOT NULL,
   date_created TIMESTAMP DEFAULT now() NOT NULL
 );

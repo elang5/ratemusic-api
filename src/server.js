@@ -16,7 +16,7 @@ getAuthToken(authToken => {
 
   setInterval(() => {
     getAuthToken(authToken => app.set('spotifyAuthToken', authToken))
-  }, 360000000)
+  }, 3600000)
 
   app.listen(PORT, () => {
     console.log(`Server listening at http://localhost:${PORT}`)

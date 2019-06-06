@@ -15,6 +15,7 @@ albumsRouter
   .get((req, res, next) => {
     const authToken = req.app.get('spotifyAuthToken')
     spotifyApi.setAccessToken(authToken)
+    console.log(authToken)
     AlbumsService.getAlbumIds(req.app.get('db'))
       .then(albumIds => {
         const preppedIds = albumIds.map(alb => alb.album_id)

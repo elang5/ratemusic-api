@@ -10,8 +10,6 @@ const spotifyApi = new SpotifyApi({
   redirectUri: 'http://localhost:8888/callback/'
 })
 
-// spotifyApi.setAccessToken(`${process.env.ACCESS_TOKEN}`)
-
 albumsRouter
   .route('/')
   .get((req, res, next) => {
@@ -67,6 +65,15 @@ albumsRouter.route('/:album_id/reviews/')
       })
       .catch(next)
   })
+
+  albumsRouter.route('/search/:search_term')
+    .get((req, res, next) => {
+      const authToken = req.app.get('spotifyAuthToken')
+      spotifyApi.setAccessToken(authToken)
+      spotifyApi.searchAlbums(req.params.search_term)
+        .then(albums => res.json(albums.body.albums))
+        .catch(next)
+    })
   
 
 module.exports = albumsRouter

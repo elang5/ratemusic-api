@@ -1,4 +1,9 @@
 const ReviewsService = {
+  getReviews(db) {
+    return db
+      .from('ratemusic_reviews')
+      .select('*')
+  },
   getById(db, id) {
     return db
       .from('ratemusic_reviews AS rev')

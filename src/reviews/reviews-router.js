@@ -33,6 +33,16 @@ reviewsRouter
   })
 
   reviewsRouter
+    .route('/')
+    .get((req, res, next) => {
+      ReviewsService.getReviews(
+        req.app.get('db')
+      )
+        .then(reviews => res.json(reviews))
+        .catch(next)
+    })
+
+  reviewsRouter
     .route('/:reviewId')
     .delete(requireAuth, (req, res, next) => {
       const id = parseInt(req.params.reviewId)

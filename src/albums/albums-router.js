@@ -10,11 +10,13 @@ const spotifyApi = new SpotifyApi({
   redirectUri: 'http://localhost:8888/callback/'
 })
 
-spotifyApi.setAccessToken(`${process.env.ACCESS_TOKEN}`)
+// spotifyApi.setAccessToken(`${process.env.ACCESS_TOKEN}`)
 
 albumsRouter
   .route('/')
   .get((req, res, next) => {
+    const authToken = req.app.get('spotifyAuthToken')
+    spotifyApi.setAccessToken(authToken)
     AlbumsService.getAlbumIds(req.app.get('db'))
       .then(albumIds => {
         const preppedIds = albumIds.map(alb => alb.album_id)
@@ -28,6 +30,8 @@ albumsRouter
 albumsRouter
   .route('/:album_id')
   .get((req, res, next) => {
+    const authToken = req.app.get('spotifyAuthToken')
+    spotifyApi.setAccessToken(authToken)
     AlbumsService.getAlbumIds(
       req.app.get('db') 
     )
@@ -64,24 +68,5 @@ albumsRouter.route('/:album_id/reviews/')
       .catch(next)
   })
   
-
-async function checkAlbumExists(req, res, next) {
-  try {
-    const album = await AlbumsService.getById(
-      req.app.get('db'),
-      req.params.album_id
-    )
-
-    if(!album)
-      return res.status(404).json({
-        error: `Album doesn't exist`
-      })
-
-    res.album = album
-    next()
-  } catch(error) {
-    next(error)
-  }
-}
 
 module.exports = albumsRouter

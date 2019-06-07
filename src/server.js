@@ -2,7 +2,7 @@ const knex = require('knex')
 const app = require('./app')
 const { PORT } = require('./config')
 const { DB_URL } = require('./config')
-const getAuthToken = require('./spotifyrefresh')
+const getAuthToken = require('./spotifyRefresh')
 
 const db = knex({
   client: 'pg',

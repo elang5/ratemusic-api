@@ -26,6 +26,7 @@
     "knex": "^0.16.5",
     "morgan": "^1.9.1",
     "pg": "^7.11.0",
+    "request": "^2.88.0",
     "spotify-web-api-node": "^4.0.0",
     "treeize": "^2.1.2",
     "winston": "^3.2.1",

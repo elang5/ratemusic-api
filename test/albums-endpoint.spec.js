@@ -1,11 +1,18 @@
 const knex = require('knex')
 const app = require('../src/app')
 const helpers = require('./helpers')
+const SpotifyApi = require('spotify-web-api-node')
+
+const spotifyApi = new SpotifyApi({
+  clientId: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET,
+  redirectUri: 'http://localhost:8888/callback/'
+})
 
 
 describe('Albums Endpoints', function() {
   let db
-
+  const authToken = app.get('spotifyAuthToken')
   const {
     testUsers,
     testReviews,
@@ -18,6 +25,7 @@ describe('Albums Endpoints', function() {
       connection: process.env.TEST_DB_URL,
     })
     app.set('db', db)
+    spotifyApi.setAccessToken(authToken)
   })
 
   after('disconnect from db', () => db.destroy())
@@ -28,16 +36,13 @@ describe('Albums Endpoints', function() {
 
   describe(`GET /api/albums`, () => {
 
+  it('responds with 200 and all the albums', () => {
+    return supertest(app)
+      .get('/api/albums')
+      .expect(200)
+  })
+  
   describe(`GET /api/albums/:album_id`, () => {
-    context(`Given no albums`, () => {
-      it(`responds with 404`, () => {
-        const albumId = 123456;
-        return supertest(app)
-          .get(`/api/albums/${albumId}`)
-          .expect(404, { error: `Album doesn't exist` })
-      })
-    })
-
     context('Given there are albums in the database', () => {
       beforeEach('insert data', () =>
         helpers.seedTables(
@@ -49,30 +54,24 @@ describe('Albums Endpoints', function() {
       )
 
       it('responds with 200 and the specified album', () => {
-        const albumId = 2
-        const expectedAlbum = helpers.makeExpectedAlbum(
-          testAlbums[albumId - 1]
-        )
-
+        const albumId = '23dKNZpiadggKHrQgHLi3L'
         return supertest(app)
           .get(`/api/albums/${albumId}`)
-          .expect(200, expectedAlbum)
+          .expect(200)
       })
     })
     })
   })
 
   describe(`GET /api/albums/:album_id/reviews`, () => {
-    context(`Given no albums`, () => {
       it(`responds with 404`, () => {
         const albumId = 123456;
         return supertest(app)
           .get(`/api/albums/${albumId}/reviews`)
           .expect(404, { error: `Album doesn't exist` })
       })
-    })
 
-    context('Given there are reviews for thing in the database', () => {
+    context('Given there are reviews for album in the database', () => {
       beforeEach('insert things', () =>
         helpers.seedTables(
           db,

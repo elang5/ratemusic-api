@@ -4,8 +4,6 @@ const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 
-const errorHandler = require('./error/error');
-
 const { NODE_ENV } = require('./config');
 
 const authRouter = require('./auth/auth-router')
@@ -26,7 +24,5 @@ app.use('/api/reviews', reviewsRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/users', usersRouter)
 
-app.use(errorHandler);
-  
 
 module.exports = app;

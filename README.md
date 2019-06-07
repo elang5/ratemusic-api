@@ -2,8 +2,6 @@
 
 This is the API which runs alongside the RateMusic Client 
 
-<!-- ADD CONTENT FOR SPOTIFY AUTH -->
-
 ## Setting Up
 
 - Install dependencies: `npm install`

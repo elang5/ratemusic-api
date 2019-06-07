@@ -1,5 +1,12 @@
 require('dotenv').config()
 const request = require('request')
+const SpotifyApi = require('spotify-web-api-node')
+
+const spotifyApi = new SpotifyApi({
+  clientId: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET,
+  redirectUri: 'http://localhost:8888/callback/'
+})
 
 const getAuthToken = (callback) => {
   var authOptions = {
@@ -21,6 +28,9 @@ const getAuthToken = (callback) => {
   });
 }
 
-module.exports = getAuthToken
+module.exports = {
+  spotifyApi,
+  getAuthToken
+}
 
 

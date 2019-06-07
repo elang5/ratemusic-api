@@ -34,7 +34,7 @@ function makeUsersArray() {
   ]
 }
 
-function makeReviewsArray(users, albums) {
+function makeReviewsArray(users) {
   return [
     {
       id: 1,
@@ -42,7 +42,7 @@ function makeReviewsArray(users, albums) {
       image: 'http://placehold.it/500x500',
       rating: 8,
       user_id: users[0].id,
-      album_id: albums[0].id,
+      album_id: '23dKNZpiadggKHrQgHLi3L',
       date_created: '2029-01-22T16:28:32.615Z',
       content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
     },
@@ -52,7 +52,7 @@ function makeReviewsArray(users, albums) {
       image: 'http://placehold.it/500x500',
       rating: 8,
       user_id: users[1].id,
-      album_id: albums[1].id,
+      album_id: '23dKNZpiadggKHrQgHLi3L',
       date_created: '2029-01-22T16:28:32.615Z',
       content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
     },
@@ -62,7 +62,7 @@ function makeReviewsArray(users, albums) {
       image: 'http://placehold.it/500x500',
       rating: 8,
       user_id: users[2].id,
-      album_id: albums[2].id,
+      album_id: '23dKNZpiadggKHrQgHLi3L',
       date_created: '2029-01-22T16:28:32.615Z',
       content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
     },
@@ -72,62 +72,23 @@ function makeReviewsArray(users, albums) {
       image: 'http://placehold.it/500x500',
       rating: 8,
       user_id: users[3].id,
-      album_id: albums[3].id,
+      album_id: '23dKNZpiadggKHrQgHLi3L',
       date_created: '2029-01-22T16:28:32.615Z',
       content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
     },
   ]
 }
 
-function makeAlbumsArray() {
-  return [
-    {
-      id: 1,
-      rating: 8,
-      title: 'First test album',
-      artist: 'Test',
-      art: 'http://placehold.it/500x500',
-      year: 2019
-    },
-    {
-      id: 2,
-      rating: 8,
-      title: 'Second test album',
-      artist: 'Test',
-      art: 'http://placehold.it/500x500',
-      year: 2019
-    },
-    {
-      id: 3,
-      rating: 8,
-      title: 'Third test album',
-      artist: 'Test',
-      art: 'http://placehold.it/500x500',
-      year: 2019
-    },
-    {
-      id: 4,
-      rating: 8,
-      title: 'Fourth test album',
-      artist: 'Test',
-      art: 'http://placehold.it/500x500',
-      year: 2019
-    }
-  ]
-}
-
 function makeFixtures() {
   const testUsers = makeUsersArray()
-  const testAlbums = makeAlbumsArray()
-  const testReviews = makeReviewsArray(testUsers, testAlbums)
-  return { testUsers, testReviews, testAlbums }
+  const testReviews = makeReviewsArray(testUsers)
+  return { testUsers, testReviews }
 }
 
 function cleanTables(db) {
   return db.raw(
     `TRUNCATE
       ratemusic_users,
-      albums,
       ratemusic_reviews
       RESTART IDENTITY CASCADE`
   )
@@ -148,15 +109,10 @@ function seedUsers(db, users) {
     })
 }
 
-function seedTables(db, users, albums, reviews) {
+function seedTables(db, users, reviews) {
   return db.transaction(async trx => {
     await seedUsers(trx, users)
-    await trx.into('albums').insert(albums)
     await trx.into('ratemusic_reviews').insert(reviews)
-    await trx.raw(
-      `SELECT setval('albums_id_seq', ?)`,
-      [albums[albums.length -1].id]
-    )
   })
 }
 
@@ -168,38 +124,12 @@ function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
   return `Bearer ${token}`
 }
 
-function makeExpectedAlbum(album) {
-  return {
-    id: album.id,
-    title: album.title,
-    artist: album.artist,
-    year: album.year,
-    art: album.art,
-    rating: album.rating
-  }
-}
-
-function makeExpectedAlbumReviews(users, albumId, reviews) {
+function makeExpectedAlbumReviews(albumId, reviews) {
   const expectedReviews = reviews.filter(review => review.album_id === albumId)
-
-  return expectedReviews.map(review => {
-    const reviewUser = users.find(user => user.id === review.user_id)
-    return {
-      id: review.id,
-      title: review.title,
-      image: review.image,
-      rating: review.rating,
-      user_id: reviewUser.id,
-      album_id: review.user_id,
-      date_created: review.date_created,
-      content: review.content
-    }
-  })
-}
+  return expectedReviews}
 
 module.exports = {
   makeUsersArray,
-  makeAlbumsArray,
   makeReviewsArray,
   
   makeFixtures,
@@ -207,6 +137,5 @@ module.exports = {
   seedUsers,
   seedTables,
   makeAuthHeader,
-  makeExpectedAlbum,
   makeExpectedAlbumReviews
 }

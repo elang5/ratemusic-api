@@ -28,19 +28,17 @@ describe('Reviews Endpoints', function() {
     beforeEach('insert data', () =>
       helpers.seedTables(
         db,
-        testUsers,
-        testAlbums
+        testUsers
       )
     )
 
     it(`creates a review, responding with 201 and the new review`, () => {
       this.retries(3)
       const testUser = testUsers[0]
-      const testAlbum = testAlbums[0]
       const newReview = {
         title: 'Test new review',
         rating: 3,
-        album_id: testAlbum.id,
+        album_id: '23dKNZpiadggKHrQgHLi3L',
         image: 'test url',
         content: 'test review content',
       }
@@ -79,11 +77,10 @@ describe('Reviews Endpoints', function() {
 
     requiredFields.forEach(field => {
       const testUser = testUsers[0]
-      const testAlbum = testAlbums[0]
       const newReview = {
         title: 'Test new review',
         rating: 3,
-        album_id: testAlbum.id,
+        album_id: '23dKNZpiadggKHrQgHLi3L',
         image: 'test url',
         content: 'test review content'
       }

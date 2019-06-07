@@ -2,13 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const AlbumsService = require('./albums-service')
 const albumsRouter = express.Router()
-const SpotifyApi = require('spotify-web-api-node')
-
-const spotifyApi = new SpotifyApi({
-  clientId: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET,
-  redirectUri: 'http://localhost:8888/callback/'
-})
+const { spotifyApi } = require('../spotify')
 
 albumsRouter
   .route('/')
@@ -32,14 +26,18 @@ albumsRouter
   .get((req, res, next) => {
     const authToken = req.app.get('spotifyAuthToken')
     spotifyApi.setAccessToken(authToken)
-    AlbumsService.getAlbumIds(
-      req.app.get('db') 
+    AlbumsService.getAlbumById(
+      req.app.get('db'),
+      req.params.album_id
     )
-      .then(albumIds => {
-        const filteredId = albumIds.filter(alb => alb.album_id === req.params.album_id)
-        spotifyApi.getAlbum(filteredId[0].album_id)
-          .then(album => res.json(album.body))
-          .catch(err => res.json(err))
+      .then(album => {
+        if(!album) {
+          res.status(404).json({ error: 'Album not found' })
+        } else {
+          spotifyApi.getAlbum(album.album_id)
+            .then(album => res.json(album.body))
+            .catch(err => res.json(err.error))
+        }
       })
       .catch(next)
   })
@@ -51,7 +49,11 @@ albumsRouter.route('/:album_id/reviews/')
       req.params.album_id
     )
       .then(reviews => {
-        res.json(reviews)
+        if(reviews.length < 1) {
+          res.status(404).json({ error: 'Album not found'})
+        } else {
+          res.json(reviews)
+        }
       })
       .catch(next)
   })
@@ -60,10 +62,15 @@ albumsRouter.route('/:album_id/reviews/')
   .get((req, res, next) => {
     AlbumsService.getReviewForAlbum(
       req.app.get('db'),
-      req.params.review_id
+      req.params.review_id,
+      req.params.album_id
     )
       .then(review => {
-        res.json(review)
+        if(review.length < 1) {
+          res.status(404).json('Review not found')
+        } else {
+          res.json(review)
+        }
       })
       .catch(next)
   })

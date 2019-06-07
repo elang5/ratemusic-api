@@ -1,31 +1,27 @@
 const knex = require('knex')
 const app = require('../src/app')
 const helpers = require('./helpers')
-const SpotifyApi = require('spotify-web-api-node')
-
-const spotifyApi = new SpotifyApi({
-  clientId: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET,
-  redirectUri: 'http://localhost:8888/callback/'
-})
-
+const { getAuthToken, spotifyApi } = require('../src/spotify')
 
 describe('Albums Endpoints', function() {
   let db
-  const authToken = app.get('spotifyAuthToken')
   const {
     testUsers,
-    testReviews,
-    testAlbums
+    testReviews
   } = helpers.makeFixtures()
 
-  before('make knex instance', () => {
+  before('make knex instance', (done) => {
     db = knex({
       client: 'pg',
       connection: process.env.TEST_DB_URL,
     })
     app.set('db', db)
-    spotifyApi.setAccessToken(authToken)
+
+    getAuthToken(authToken => {
+      app.set('spotifyAuthToken', authToken)
+      spotifyApi.setAccessToken(authToken)
+      done()
+    })
   })
 
   after('disconnect from db', () => db.destroy())
@@ -43,23 +39,24 @@ describe('Albums Endpoints', function() {
   })
   
   describe(`GET /api/albums/:album_id`, () => {
-    context('Given there are albums in the database', () => {
-      beforeEach('insert data', () =>
-        helpers.seedTables(
-          db,
-          testUsers,
-          testAlbums,
-          testReviews,
-        )
-      )
-
+      beforeEach('insert things', () =>
+      helpers.seedTables(
+        db,
+        testUsers,
+        testReviews
+      ))
       it('responds with 200 and the specified album', () => {
         const albumId = '23dKNZpiadggKHrQgHLi3L'
         return supertest(app)
           .get(`/api/albums/${albumId}`)
           .expect(200)
       })
-    })
+      it('responds with 404 when given a nonexistent id', () => {
+        const albumId = 1
+        return supertest(app)
+          .get(`/api/albums/${albumId}`)
+          .expect(404, { error: 'Album not found' })
+      })
     })
   })
 
@@ -68,7 +65,7 @@ describe('Albums Endpoints', function() {
         const albumId = 123456;
         return supertest(app)
           .get(`/api/albums/${albumId}/reviews`)
-          .expect(404, { error: `Album doesn't exist` })
+          .expect(404, { error: 'Album not found' })
       })
 
     context('Given there are reviews for album in the database', () => {
@@ -76,23 +73,28 @@ describe('Albums Endpoints', function() {
         helpers.seedTables(
           db,
           testUsers,
-          testAlbums,
-          testReviews,
+          testReviews
         )
       )
 
-      it.skip('responds with 200 and the specified reviews', () => {
-        const albumId = 1
-        console.log(testReviews)
+      it('responds with 200 and the specified reviews', () => {
+        const albumId = '23dKNZpiadggKHrQgHLi3L'
         const expectedReviews = helpers.makeExpectedAlbumReviews(
-          testUsers, albumId, testReviews
+          albumId, testReviews
         )
-        
+        // Map through expected reviews in order to implement user references, which are added to the res.body when a request is made to /api/albums/:album_id/reviews and they cannot be directly added to the dummy data in the test helpers file
+        const expectedReviewsWithUsers = expectedReviews.map((review, index) => {
+          return {
+            ...review,
+            full_name: `Test user ${index+1}`,
+            user_name: `test-user-${index+1}`
+          }
+        })
         return supertest(app)
           .get(`/api/albums/${albumId}/reviews`)
           .expect(200)
           .then(res => {
-            expect(res.body).to.eql(expectedReviews)
+            expect(res.body).to.eql(expectedReviewsWithUsers)
           })
       })
     })

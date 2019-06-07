@@ -1,6 +1,8 @@
-# Express Boilerplate!
+# Ratemusic Server
 
-This is a boilerplate project used for starting new projects!
+This is the API which runs alongside the RateMusic Client 
+
+<!-- ADD CONTENT FOR SPOTIFY AUTH -->
 
 ## Setting Up
 
@@ -8,8 +10,8 @@ This is a boilerplate project used for starting new projects!
 - Create development and test databases: `createdb ratemusic`, `createdb ratemusic-test`
 - Create database user: `createuser ratemusic`
 - Grant privileges to new user in `psql`:
-  - `GRANT ALL PRIVILEGES ON DATABASE thingful TO thingful`
-  - `GRANT ALL PRIVILEGES ON DATABASE "thingful-test" TO thingful`
+  - `GRANT ALL PRIVILEGES ON DATABASE ratemusic TO ratemusic`
+  - `GRANT ALL PRIVILEGES ON DATABASE "thingful-test" TO ratemusic`
 - Prepare environment file: `cp example.env .env`
   - Replace values in `.env` with your custom values if necessary.
 - Bootstrap development database: `MIGRATION_DB_NAME=ratemusic npm run migrate`

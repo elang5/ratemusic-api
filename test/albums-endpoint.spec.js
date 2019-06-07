@@ -2,6 +2,7 @@ const knex = require('knex')
 const app = require('../src/app')
 const helpers = require('./helpers')
 
+
 describe('Albums Endpoints', function() {
   let db
 
@@ -26,35 +27,6 @@ describe('Albums Endpoints', function() {
   afterEach('cleanup', () => helpers.cleanTables(db))
 
   describe(`GET /api/albums`, () => {
-    context(`Given no albums`, () => {
-      it(`responds with 200 and an empty list`, () => {
-        return supertest(app)
-          .get('/api/albums')
-          .expect(200, [])
-      })
-    })
-
-    context('Given there are albums in the database', () => {
-      beforeEach('insert data', () =>
-        helpers.seedTables(
-          db,
-          testUsers,
-          testAlbums,
-          testReviews
-        )
-      )
-
-      it('responds with 200 and all of the albums', () => {
-        const expectedAlbums = testAlbums.map(album =>
-          helpers.makeExpectedAlbum(
-            album
-          )
-        )
-        return supertest(app)
-          .get('/api/albums')
-          .expect(200, expectedAlbums)
-      })
-    })
 
   describe(`GET /api/albums/:album_id`, () => {
     context(`Given no albums`, () => {

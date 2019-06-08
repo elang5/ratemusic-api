@@ -26,19 +26,15 @@ albumsRouter
   .get((req, res, next) => {
     const authToken = req.app.get('spotifyAuthToken')
     spotifyApi.setAccessToken(authToken)
-    AlbumsService.getAlbumById(
-      req.app.get('db'),
-      req.params.album_id
-    )
+    spotifyApi.getAlbum(req.params.album_id)
       .then(album => {
         if(!album) {
           res.status(404).json({ error: 'No reviews were found for this album. Be the first to post one!' })
         } else {
-          spotifyApi.getAlbum(album.album_id)
-            .then(album => res.json(album.body))
-            .catch(err => res.json(err.error))
+          res.json(album.body)
         }
       })
+      .catch(err => res.json(err.error))
       .catch(next)
   })
 

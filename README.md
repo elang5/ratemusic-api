@@ -76,8 +76,7 @@ Run the tests `npm test`
 │       ├── /:id
 ```
 
-### POST `api/auth/login
-
+### POST `api/auth/login`
 ```js
 // req.body
 {

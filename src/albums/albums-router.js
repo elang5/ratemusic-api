@@ -46,7 +46,7 @@ albumsRouter.route('/:album_id/reviews/')
     )
       .then(reviews => {
         if(reviews.length < 1) {
-          res.status(404).json({ error: 'No reviews were found.'})
+          res.json({ error: 'No reviews were found.'})
         } else {
           res.json(reviews)
         }

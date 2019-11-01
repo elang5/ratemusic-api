@@ -23,7 +23,7 @@
     "express-router": "0.0.1",
     "helmet": "^3.16.0",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^0.16.5",
+    "knex": "^0.19.5",
     "morgan": "^1.9.1",
     "pg": "^7.11.0",
     "request": "^2.88.0",
